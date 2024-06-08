@@ -5,7 +5,7 @@ const resultsDiv = document.getElementById('results');
 searchInput.addEventListener('input', () => {
     const query = searchInput.value;
     if (query.length > 2) {
-        fetch(`http://www.omdbapi.com/?s=${query}&apikey=${apiKey}`)
+        fetch(`https://www.omdbapi.com/?s=${query}&apikey=${apiKey}`)
             .then(response => response.json())
             .then(data => displayResults(data.Search))
             .catch(error => console.error('Error:', error));

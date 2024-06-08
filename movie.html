@@ -17,7 +17,7 @@
         const apiKey = '2e840906';
         const params = new URLSearchParams(window.location.search);
         const imdbID = params.get('id');
-        fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`)
+        fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`)
             .then(response => response.json())
             .then(data => displayMovieDetails(data))
             .catch(error => console.error('Error:', error));
