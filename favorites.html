@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Movies</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">My Favorite Movies</h1>
+        <div id="favorites" class="mt-3"></div>
+        <a href="index.html" class="btn btn-info mt-3">Back to Home</a>
+    </div>
+    <script>
+        const apiKey = '2e840906';
+        const favoritesKey = 'favoriteMovies';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayFavorites();
+        });
+
+        function displayFavorites() {
+            const favoritesDiv = document.getElementById('favorites');
+            const favoriteMovies = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+            favoriteMovies.forEach(imdbID => {
+                fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`)
+                    .then(response => response.json())
+                    .then(movie => {
+                        const movieDiv = document.createElement('div');
+                        movieDiv.classList.add('movie');
+                        movieDiv.innerHTML = `
+                            <span><a href="movie.html?id=${movie.imdbID}">${movie.Title} (${movie.Year})</a></span>
+                            <button class="btn btn-danger" onclick="removeFromFavorites('${imdbID}')">Remove</button>
+                        `;
+                        favoritesDiv.appendChild(movieDiv);
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        }
+
+        function removeFromFavorites(imdbID) {
+            let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+            favorites = favorites.filter(id => id !== imdbID);
+            localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+            location.reload();
+        }
+    </script>
+</body>
+</html>

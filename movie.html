@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5" id="title">Loading...</h1>
+        <div id="movie-details" class="mt-3"></div>
+        <a href="index.html" class="btn btn-info mt-3">Back to Home</a>
+    </div>
+    <script>
+        const apiKey = '2e840906';
+        const params = new URLSearchParams(window.location.search);
+        const imdbID = params.get('id');
+        fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`)
+            .then(response => response.json())
+            .then(data => displayMovieDetails(data))
+            .catch(error => console.error('Error:', error));
+
+        function displayMovieDetails(movie) {
+            document.getElementById('title').textContent = movie.Title;
+            const movieDetails = document.getElementById('movie-details');
+            movieDetails.innerHTML = `
+                <img src="${movie.Poster}" class="img-fluid" alt="${movie.Title}">
+                <p><strong>Plot:</strong> ${movie.Plot}</p>
+                <p><strong>Director:</strong> ${movie.Director}</p>
+                <p><strong>Cast:</strong> ${movie.Actors}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
